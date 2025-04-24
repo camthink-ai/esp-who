@@ -17,6 +17,16 @@ WhoS3Cam::WhoS3Cam(const pixformat_t pixel_format,
     if (fb_count < 2) {
         ESP_LOGE("WhoS3Cam", "fb_count is at least 2.");
     }
+    
+    gpio_config_t power_io_config = {.pin_bit_mask = BIT64(GPIO_NUM_3),//GPIO_NUM_3 is the power pin of the sensor.
+        .mode = GPIO_MODE_OUTPUT_OD, 
+        .pull_up_en = GPIO_PULLUP_ENABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE};
+
+    ESP_ERROR_CHECK(gpio_config(&power_io_config));
+    ESP_ERROR_CHECK(gpio_set_level(GPIO_NUM_3, true));
+
     ESP_ERROR_CHECK(bsp_i2c_init());
     camera_config_t camera_config = BSP_CAMERA_DEFAULT_CONFIG;
     camera_config.pixel_format = pixel_format;
