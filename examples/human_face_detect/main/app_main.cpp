@@ -5,7 +5,7 @@ using namespace who::cam;
 using namespace who::lcd;
 using namespace who::app;
 
-#define WITH_LCD 1
+#define WITH_LCD 0
 
 extern "C" void app_main(void)
 {
@@ -14,8 +14,8 @@ extern "C" void app_main(void)
 #endif
 
 #if CONFIG_IDF_TARGET_ESP32S3
-    ESP_ERROR_CHECK(bsp_leds_init());
-    ESP_ERROR_CHECK(bsp_led_set(BSP_LED_GREEN, false));
+    // ESP_ERROR_CHECK(bsp_leds_init());
+    // ESP_ERROR_CHECK(bsp_led_set(BSP_LED_GREEN, false));
 #endif
 
 #if CONFIG_IDF_TARGET_ESP32P4
@@ -24,9 +24,9 @@ extern "C" void app_main(void)
 #elif CONFIG_IDF_TARGET_ESP32S3
     auto cam = new WhoS3Cam(PIXFORMAT_RGB565, FRAMESIZE_240X240, 2, true);
 #endif
-    auto lcd = new WhoLCD();
 
 #if WITH_LCD
+    auto lcd = new WhoLCD();
     auto model = new HumanFaceDetect();
     auto detect = new WhoDetectAppLCD({{255, 0, 0}});
     detect->set_cam(cam);
